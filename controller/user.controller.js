@@ -38,4 +38,16 @@ const loginUser = async(req, res, next)=>{
     }
 }
 
-module.exports = {createUser, loginUser};
+//get all users
+
+const getAllUsers = async(req, res, next)=>{
+    try {
+        const getallUser = await User.find()
+        res.json({length: getallUser.length, getallUser})
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = {createUser, loginUser, getAllUsers};
