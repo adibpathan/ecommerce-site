@@ -2,6 +2,7 @@ const express = require('express')
 const dotenv = require('dotenv')
 const dbConnect = require('./config/dbConnect')
 const authRouter = require('./routes/auth.route')
+const { notFound, errorHandler } = require('./middlewares/errorHandler')
 
 dotenv.config()
 dbConnect()
@@ -14,6 +15,10 @@ app.use(express.json())
 
 // middleware 
 app.use("/api/user", authRouter)
+
+
+app.use(notFound)
+app.use(errorHandler)
 
 app.get('/', (req, res)=>{
     res.send('hello adib')
