@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const dbConnect = require('./config/dbConnect')
+const authRouter = require('./routes/auth.route')
 
 dotenv.config()
 dbConnect()
@@ -8,6 +9,11 @@ dbConnect()
 const port = process.env.PORT;
 
 const app = express()
+
+app.use(express.json())
+
+// middleware 
+app.use("/api/user", authRouter)
 
 app.get('/', (req, res)=>{
     res.send('hello adib')
