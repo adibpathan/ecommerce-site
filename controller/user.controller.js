@@ -76,13 +76,52 @@ const deleteUser = async (req, res, next) => {
 // update a user
 const updateUser = async (req, res, next) => {
   try {
-    const updateuser = await User.findByIdAndUpdate(req.params.id, {
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      mobile: req.body.mobile
-    }, {new: true});
+    // const {_id} = req.user
+    const updateuser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        mobile: req.body.mobile,
+      },
+      { new: true }
+    );
     res.json({ updateuser });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// block a user
+const blockUser = async (req, res, next) => {
+  try {
+    const block = await User.findByIdAndUpdate(
+      req.params.id,
+      { isBlocked: true },
+      { new: true }
+    );
+    res.json({
+      block,
+      msg: "User blocked",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// unblock a user
+const unblockUser = async (req, res, next) => {
+  try {
+    const unblock = await User.findByIdAndUpdate(
+      req.params.id,
+      { isBlocked: false },
+      { new: true }
+    );
+    res.json({
+      unblock,
+      msg: "User unblocked",
+    });
   } catch (error) {
     next(error);
   }
@@ -95,4 +134,6 @@ module.exports = {
   getUser,
   deleteUser,
   updateUser,
+  blockUser,
+  unblockUser,
 };
