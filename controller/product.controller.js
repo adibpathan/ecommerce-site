@@ -1,7 +1,11 @@
 const Product = require("../models/product.model")
+const slugify = require("slugify")
 
 const createProduct = async(req, res, next)=>{
     try {
+        if(req.body.title){
+            req.body.slug = slugify(req.body.title)
+        }
        const newProduct = await Product.create(req.body)
        res.json({newProduct}) 
     } catch (error) {
@@ -32,11 +36,12 @@ const getProduct = async(req, res, next)=>{
 //update a products 
 const updateProduct = async(req, res, next)=>{
     try {
-        const editProduct = await Product.findByIdAndUpdate(req.params.id, {
-            title: req.body.title,
-            slug: req.body.slug,
 
-        }, {new: true})
+        if(req.body.title){
+            req.body.slug = slugify(req.body.title)
+        }
+
+        const editProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
         res.json({editProduct})
     } catch (error) {

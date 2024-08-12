@@ -5,6 +5,7 @@ const authRouter = require('./routes/auth.route')
 const { notFound, errorHandler } = require('./middlewares/errorHandler')
 const cookieParser = require("cookie-parser")
 const productRouter = require("./routes/product.route")
+const morgan = require("morgan")
 
 dotenv.config()
 dbConnect()
@@ -15,6 +16,7 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(morgan('dev'))
 
 // middleware 
 app.use("/api/user", authRouter)
