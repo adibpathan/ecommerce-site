@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const dbConnect = require('./config/dbConnect')
 const authRouter = require('./routes/auth.route')
 const { notFound, errorHandler } = require('./middlewares/errorHandler')
+const cookieParser = require("cookie-parser")
 
 dotenv.config()
 dbConnect()
@@ -12,6 +13,7 @@ const port = process.env.PORT;
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
 // middleware 
 app.use("/api/user", authRouter)

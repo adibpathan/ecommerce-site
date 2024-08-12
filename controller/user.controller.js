@@ -1,5 +1,7 @@
 const { generateToken } = require("../config/jwtToken");
 const User = require("../models/user.model");
+const { generateRefreshToken } = require("../config/refreshToken");
+const jwt = require("jsonwebtoken")
 
 const createUser = async (req, res, next) => {
   try {
@@ -22,6 +24,18 @@ const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
     const findUser = await User.findOne({ email });
     if (findUser && (await findUser.isPasswordMatched(password))) {
+      const refreshToken = await generateRefreshToken(findUser._id);
+      const updateuser = await User.findByIdAndUpdate(
+        findUser._id,
+        { refreshToken: refreshToken },
+        { new: true }
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 72 * 60 * 60 * 1000
+      })
+
       res.json({
         _id: findUser._id,
         firstname: findUser.firstname,
@@ -37,6 +51,35 @@ const loginUser = async (req, res, next) => {
     next(error);
   }
 };
+
+//handle refreshToken 
+const handleRefreshToken = async(req, res, next)=>{
+  try {
+    const cookie = req.cookies;
+    if(!cookie.refreshToken){
+      throw new Error('No Refresh Token')
+    }
+    const refreshToken = cookie.refreshToken;
+
+    const user = await User.findOne({refreshToken})
+    // console.log(typeof(user._id))
+
+    if(!user) throw new Error('no refreshtoken present in db or not matched')
+
+    jwt.verify(refreshToken, process.env.JWT_SECRET, (err, decoded)=>{
+      if(err || (user._id).toString() !== decoded.id){
+        throw new Error(`there is somethign wrong in refreshtoken`)
+      }else{
+        const accessToken = generateRefreshToken(user._id)
+        res.json({
+          accessToken
+        })
+      }
+    })
+  } catch (error) {
+    next(error)
+  }
+}
 
 //get all users
 
@@ -136,4 +179,5 @@ module.exports = {
   updateUser,
   blockUser,
   unblockUser,
+  handleRefreshToken
 };
