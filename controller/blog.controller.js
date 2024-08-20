@@ -40,12 +40,12 @@ const deleteBlog = async(req, res, next)=>{
 
 const getBlog = async(req, res, next)=>{
     try {
-       const getBlog = await Blog.findById(req.params.id) 
+       const getBlog = await Blog.findById(req.params.id).populate("likes").populate("dislikes")
        const updateViews = await Blog.findByIdAndUpdate(req.params.id, {
         $inc: {numViews: 1}
        }, {new: true})
 
-       res.json({updateViews})
+       res.json({getBlog})
     } catch (error) {
         next(error)
     }

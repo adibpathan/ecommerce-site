@@ -6,6 +6,8 @@ const { notFound, errorHandler } = require('./middlewares/errorHandler')
 const cookieParser = require("cookie-parser")
 const productRouter = require("./routes/product.route")
 const blogRotuer = require("./routes/blog.route")
+const categoryRouter = require("./routes/prodcategory.route")
+const blogcategoryRouter = require("./routes/blogcategory.route")
 const morgan = require("morgan")
 
 dotenv.config()
@@ -23,6 +25,8 @@ app.use(morgan('dev'))
 app.use("/api/user", authRouter)
 app.use("/api/product", productRouter)
 app.use("/api/blog", blogRotuer)
+app.use("/api/category", categoryRouter)
+app.use("/api/blogcategory", blogcategoryRouter)
 
 
 app.use(notFound)
