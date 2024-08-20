@@ -8,6 +8,7 @@ const productRouter = require("./routes/product.route")
 const blogRotuer = require("./routes/blog.route")
 const categoryRouter = require("./routes/prodcategory.route")
 const blogcategoryRouter = require("./routes/blogcategory.route")
+const brandRouter = require("./routes/brand.route")
 const morgan = require("morgan")
 
 dotenv.config()
@@ -27,7 +28,7 @@ app.use("/api/product", productRouter)
 app.use("/api/blog", blogRotuer)
 app.use("/api/category", categoryRouter)
 app.use("/api/blogcategory", blogcategoryRouter)
-
+app.use("/api/brand", brandRouter)
 
 app.use(notFound)
 app.use(errorHandler)

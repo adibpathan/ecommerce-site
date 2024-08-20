@@ -47,4 +47,5 @@ const getAllCategory = async(req, res, next)=>{
         next(error)
     }
 }
+
 module.exports = {createCategory, updateCategory, deleteCategory, getCategory, getAllCategory}
