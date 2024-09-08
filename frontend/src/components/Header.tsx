@@ -31,9 +31,9 @@ const Header = () => {
             />
             <button
               id="search"
-              className="text-2xl bg-yellow-600 p-2 font-semibold rounded-tr-md rounded-br-md"
+              className="text-2xl bg-yellow-500 p-2 font-semibold rounded-tr-md rounded-br-md"
             >
-              <IoSearch />
+              <IoSearch className="text-gray-700"/>
             </button>
           </div>
           <div className="right-header flex justify-center items-center gap-9 font-semibold text-sm tracking-wide capitalize">
@@ -60,7 +60,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="login">
-              <Link className="flex items-center" to="/signup">
+              <Link className="flex items-center" to="/login">
                 <div className="login-icon">
                   <CiUser className="text-2xl mr-1" />
                 </div>
